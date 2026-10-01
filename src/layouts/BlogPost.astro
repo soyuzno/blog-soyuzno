@@ -1,86 +1,268 @@
 ---
-import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import FormattedDate from '../components/FormattedDate.astro';
-import Header from '../components/Header.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate } = Astro.props;
 ---
 
-<html lang="en">
-	<head>
-		<BaseHead title={title} description={description} />
-		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
-		</style>
-	</head>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title} — Soyuzno</title>
+    <meta name="description" content={description}>
+    
+    <!-- Google Sans Flex -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap" rel="stylesheet">
+    
+    <style is:global>
+        :root {
+            --bg-color: #ffffff;
+            --text-main: #111827;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+        }
 
-	<body>
-		<Header />
-		<main>
-			<article>
-				<div class="hero-image">
-					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
-				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
-						</div>
-						<h1>{title}</h1>
-						<hr />
-					</div>
-					<slot />
-				</div>
-			</article>
-		</main>
-		<Footer />
-	</body>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Google Sans Flex", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            color: var(--text-muted);
+        }
+
+        /* CONTAINER DENGAN GARIS VERTIKAL KIRI & KANAN */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 4rem; 
+            border-left: 1px solid var(--border-color); 
+            border-right: 1px solid var(--border-color); 
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* NAVIGATION */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .logo-circle {
+            width: 31px;
+            height: 31px;
+            background: #d1d5db;
+            border-radius: 50%;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .nav-links a.active {
+            color: var(--text-main);
+            border-bottom: 1px solid var(--text-main);
+            padding-bottom: 0.1rem;
+        }
+
+        .nav-links a:not(.active) {
+            color: var(--text-muted);
+        }
+
+        /* ARTICLE SECTION */
+        .article-main {
+            padding: 4rem 0;
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            column-gap: 2rem;
+        }
+
+        .article-container {
+            grid-column: 3 / 11;
+        }
+
+        .article-header {
+            margin-bottom: 3rem;
+        }
+
+        .article-title {
+            font-size: 2.25rem;
+            font-weight: 500;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+
+        .article-date {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        /* ARTICLE BODY CONTENT */
+        .article-body {
+            font-size: 1.05rem;
+            color: #374151;
+            line-height: 1.8;
+        }
+
+        .article-body p {
+            margin-bottom: 1.5rem;
+        }
+
+        .article-body h2 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--text-main);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .article-body ul {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+        }
+
+        .article-body li {
+            margin-bottom: 0.5rem;
+        }
+        .article-body img {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+            margin: 2rem 0;
+            display: block;
+        }
+
+        /* FOOTER */
+        footer {
+            margin: 0 -4rem;
+            padding: 2rem 4rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 900px) {
+            .article-container {
+                grid-column: 2 / 12;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                border-left: none;
+                border-right: none;
+                padding: 0 1.5rem;
+            }
+            .nav-links {
+                display: none;
+            }
+            .article-container {
+                grid-column: 1 / -1;
+            }
+            footer {
+                margin: 0 -1.5rem;
+                padding: 2rem 1.5rem;
+                flex-direction: column;
+                gap: 1rem;
+                align-items: center;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- HEADER / NAV -->
+        <nav>
+            <div class="logo">
+                <div class="logo-circle"></div>
+                Soyuzno
+            </div>
+            <div class="nav-links">
+                <a href="https://soyuzno.com/#work">Work</a>
+                <a href="https://soyuzno.com/#about">About</a>
+                <a href="https://soyuzno.com/#contact">Contact</a>
+                <a href="/" class="active">Blog</a>
+            </div>
+        </nav>
+
+        <!-- ARTICLE CONTENT -->
+        <main class="article-main">
+            <div class="article-container">
+                <article>
+                    <header class="article-header">
+                        <h1 class="article-title">{title}</h1>
+                        <p class="article-date">
+                            <time datetime={pubDate.toISOString()}>
+                                {pubDate.toLocaleDateString('id-ID', {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric',
+                                })}
+                            </time>
+                        </p>
+                    </header>
+                    <div class="article-body">
+                        <slot />
+                    </div>
+                </article>
+            </div>
+        </main>
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="footer-links">
+                <a href="https://www.behance.net/soyuzno">Behance</a> /
+                <a href="https://id.linkedin.com/in/soyuzno">LinkedIn</a> /
+                <a href="https://x.com/soyuzno">X</a>
+            </div>
+            <div>Privacy Policy • &copy;2026</div>
+        </footer>
+    </div>
+
+</body>
 </html>
